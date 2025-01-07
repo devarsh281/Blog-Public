@@ -120,18 +120,7 @@ const Display: React.FC = () => {
 
   const toggleDescription = async (postId: number) => {
     try {
-      const response = await disAPI(`analysis/updateviews/${postId}`); 
-  
-      let data;
-      if (response.ok !== undefined) {
-        if (!response.ok) {
-          throw new Error("Failed to increment view count.");
-        }
-        data = await response.json();
-      } else {
-        data = response.data;
-      }
-  
+      const data = await disAPI(`analysis/updateviews/${postId}`); 
       console.log(data);
   
       setPosts((prevPosts) =>
@@ -141,7 +130,6 @@ const Display: React.FC = () => {
             : post
         )
       );
-  
       navigate(`/posts/${postId}`);
     } catch (error) {
       console.error("Error updating view count:", error);
