@@ -118,30 +118,35 @@ const Display: React.FC = () => {
     setSelectedCategory(value);
   };
 
-  // const toggleDescription = async (postId: number) => {
-  //   try {
-  //     await fetch("http://localhost:8081/analysis/analytics", {
-  //       method: "POST",
-  //       body: JSON.stringify({ id: postId }),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     });
+  const toggleDescription = async (postId: number) => {
+    try {
+      const response = await disAPI(`analysis/updateviews/${postId}`); 
   
-  //     setPosts((prevPosts) =>
-  //       prevPosts.map((post) =>
-  //         post.id === postId ? { ...post, views: (post.views || 0) + 1 } : post
-  //       )
-  //     );
+      let data;
+      if (response.ok !== undefined) {
+        if (!response.ok) {
+          throw new Error("Failed to increment view count.");
+        }
+        data = await response.json();
+      } else {
+        data = response.data;
+      }
   
-  //     navigate(`/posts/${postId}`);
-  //   } catch (error) {
-  //     console.error("Error updating view count:", error);
-  //   }
-  // };
-  const toggleDescription=async(postId: number)=>{
-  navigate(`/posts/${postId}`);
-}
+      console.log(data);
+  
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId
+            ? { ...post, views: (post.views || 0) + 1 }
+            : post
+        )
+      );
+  
+      navigate(`/posts/${postId}`);
+    } catch (error) {
+      console.error("Error updating view count:", error);
+    }
+  };
   
 console.log(posts);
 
@@ -234,7 +239,7 @@ console.log(posts);
                     {post.title}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {post.description.substring(0, 200)}...
+                    {post.description.substring(0, 110)}...
                     <button
                       onClick={() => toggleDescription(post.id)}
                       className="text-blue-500 ml-2 text-sm mt-4"
