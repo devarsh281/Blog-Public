@@ -76,7 +76,7 @@ const PostDetail: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {post.image && (
+        {/* {post.image && (
           <div className="mb-4">
             <img
               src={post.image}
@@ -84,7 +84,7 @@ const PostDetail: React.FC = () => {
               className="w-full h-auto rounded-lg shadow-md"
             />
           </div>
-        )}
+        )} */}
         <div className="flex justify-between text-xl text-muted-foreground mb-4">
           <span>Category : {post.category}</span>
           <span>Created At : {new Date(post.date).toLocaleDateString()}</span>
