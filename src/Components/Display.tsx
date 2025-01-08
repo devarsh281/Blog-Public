@@ -19,6 +19,7 @@ interface Post {
   category: string;
   description: string;
   views:number;
+  image:string;
 }
 
 const Display: React.FC = () => {
@@ -221,7 +222,7 @@ console.log(posts);
                     {post.id}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {post.date.split("T")[0]}
+                  {new Date(post.date).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {post.title}

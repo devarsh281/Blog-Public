@@ -1,11 +1,17 @@
-'use client'
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { disAPI } from "@/lib/utils";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Post {
   id: number;
@@ -13,6 +19,7 @@ interface Post {
   title: string;
   category: string;
   description: string;
+  image: string | null; 
 }
 
 const PostDetail: React.FC = () => {
@@ -29,7 +36,12 @@ const PostDetail: React.FC = () => {
 
       try {
         const response = await disAPI(`posts/getID/${id}`);
-        setPost(response);
+        const postData = response;
+        if (postData.image) {
+          postData.image = `http://localhost:8081/posts/images/${id}`;
+        }
+
+        setPost(postData);
       } catch {
         setError("Error fetching post");
       } finally {
@@ -59,9 +71,20 @@ const PostDetail: React.FC = () => {
   return (
     <Card className="p-28">
       <CardHeader>
-        <CardTitle className="text-center text-3xl font-bold text-green-800">{post.title}</CardTitle>
+        <CardTitle className="text-center text-3xl font-bold text-green-800">
+          {post.title}
+        </CardTitle>
       </CardHeader>
       <CardContent>
+        {post.image && (
+          <div className="mb-4">
+            <img
+              src={post.image}
+              alt={`Image for ${post.title}`}
+              className="w-full h-auto rounded-lg shadow-md"
+            />
+          </div>
+        )}
         <div className="flex justify-between text-xl text-muted-foreground mb-4">
           <span>Category : {post.category}</span>
           <span>Created At : {new Date(post.date).toLocaleDateString()}</span>
@@ -69,7 +92,9 @@ const PostDetail: React.FC = () => {
         <p>{post.description}</p>
       </CardContent>
       <CardFooter>
-        <Button variant="ghost" onClick={handleBack}>Back</Button>
+        <Button variant="ghost" onClick={handleBack}>
+          Back
+        </Button>
       </CardFooter>
     </Card>
   );
@@ -101,4 +126,3 @@ const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
 );
 
 export default PostDetail;
-
