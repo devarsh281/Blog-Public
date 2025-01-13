@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   // Loader2,
   ChevronLeft,
@@ -39,11 +39,13 @@ interface Post {
 }
 
 const categoryColors: { [key: string]: string } = {
-  Lifestyle: "from-pink-400 to-rose-600",
+  Sports: "from-pink-400 to-rose-600",
   Travel: "from-teal-400 to-emerald-600",
   Food: "from-orange-400 to-amber-600",
   Fitness: "from-lime-400 to-green-600",
   Entrepreneur: "from-indigo-400 to-purple-600",
+  Author: "from-cyan-500 to-cyan-900",
+  Gardening: "from-teal-700 to-emerald-800",
 };
 
 export default function Display() {

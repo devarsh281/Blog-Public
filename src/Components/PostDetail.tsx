@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { disAPI } from "@/lib/utils";
 import {
