@@ -77,108 +77,135 @@ const PostDetail: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
+      className="min-h-screen  bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="bg-gray-100 min-h-screen">
-        <Card className="max-w-8xl mx-auto shadow-lg rounded-lg border border-gray-300 bg-white">
-          <CardHeader className="bg-gradient-to-r from-violet-100 to-purple-100 text-white rounded-t-lg py-6">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-            >
-              <CardTitle className="text-2xl md:text-5xl font-extrabold text-center  text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 ">
-                {post.title}
-              </CardTitle>
-            </motion.div>
-          </CardHeader>
-
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-6">
-              {post.image && (
-                <div className="sm:w-1/2 mb-4 sm:mb-0">
-                  <motion.img
-                    src={post.image}
-                    alt={`Image for ${post.title}`}
-                    className="w-104 h-104 object-cover rounded-lg shadow-xl"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                  />
-                  <div className="mb-6 flex justify-between mt-5">
-                    <div className=" text-lg text-gray-600">
-                      <span>
-                        Category :
-                        <strong className="text-blue-500">
-                          {post.category}
-                        </strong>
-                      </span>
-                    </div>
-                    <div className=" text-lg text-gray-600">
-                      <span className="text-center text-lg">
-                        Created On :
-                        <strong className="text-blue-500">
-                          {new Date(post.date).toLocaleDateString()}
-                        </strong>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div className={post.image ? "sm:w-1/2" : "w-full"}>
-                <p className="text-lg text-gray-800 mb-4">{post.description}</p>
-
-                <div className="mt-6 flex flex-col gap-4">
-                  <ShareButton
-                    postTitle={post.title}
-                    postUrl={`https://yourwebsite.com/posts/${post.id}`}
-                  />
-                </div>
-              </div>
+      <Card className="max-w-7xl mx-auto overflow-hidden shadow-2xl rounded-3xl border-0 bg-white/80 backdrop-blur-sm">
+        <CardHeader className="relative py-12 px-6 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-violet-400 to-indigo-500 opacity-90"></div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="relative z-10"
+          >
+            <CardTitle className="text-3xl md:text-5xl font-extrabold text-center text-white mb-4">
+              {post.title}
+            </CardTitle>
+            <div className="flex justify-center items-center space-x-4 text-white/80">
+              <span className="text-lg font-medium">{post.category}</span>
+              <span className="w-1 h-1 rounded-full bg-white/60"></span>
+              <span className="text-lg font-medium">
+                {new Date(post.date).toLocaleDateString()}
+              </span>
             </div>
-          </CardContent>
+          </motion.div>
+        </CardHeader>
 
-          <CardFooter className="text-center ">
-            <Button
-              className="bg-blue-600 text-white hover:bg-blue-700 h-10 px-6"
-              onClick={handleBack}
-            >
-              <IoMdArrowRoundBack className="mr-2" /> Back
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+        <CardContent className="p-6 md:p-10">
+          <div className="flex flex-col md:flex-row gap-10">
+            {post.image && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="md:w-1/2"
+              >
+                <img
+                  src={post.image}
+                  alt={`Image for ${post.title}`}
+                  className="w-full h-auto object-cover rounded-2xl shadow-lg"
+                />
+              </motion.div>
+            )}
+            <div className={post.image ? "md:w-1/2" : "w-full"}>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                className="text-lg text-gray-700 leading-relaxed mb-6"
+              >
+                {post.description}
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+              >
+                <ShareButton
+                  postTitle={post.title}
+                  postUrl={`https://yourwebsite.com/posts/${post.id}`}
+                />
+              </motion.div>
+            </div>
+          </div>
+        </CardContent>
+
+        <CardFooter className="flex justify-center pb-8">
+          <Button
+            className="bg-gradient-to-r from-violet-500 to-indigo-600 text-white hover:from-violet-600 hover:to-indigo-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg h-12 px-8 rounded-full text-lg font-semibold"
+            onClick={handleBack}
+          >
+            <IoMdArrowRoundBack className="mr-2 text-2xl" /> Back to Posts
+          </Button>
+        </CardFooter>
+      </Card>
     </motion.div>
   );
 };
 
 const LoadingSkeleton = () => (
-  <Card className="max-w-3xl mx-auto my-8 bg-white shadow-lg rounded-lg p-6">
-    <CardHeader>
-      <Skeleton className="h-6 w-3/4 mx-auto mb-4" />
-    </CardHeader>
-    <CardContent>
-      <div className="flex gap-6">
-        <Skeleton className="h-48 w-1/3" />
-        <div className="w-2/3">
-          <div className="flex justify-between mb-4">
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-4 w-24" />
-          </div>
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-4 w-full mb-2" />
-          <Skeleton className="h-4 w-3/4" />
+  <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8">
+    <Card className="max-w-4xl mx-auto overflow-hidden shadow-2xl rounded-3xl border-0 bg-white/80 backdrop-blur-sm">
+      <CardHeader className="relative py-12 px-6">
+        <Skeleton className="h-10 w-3/4 mx-auto mb-4" />
+        <div className="flex justify-center items-center space-x-4">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-4 w-24" />
         </div>
-      </div>
-    </CardContent>
-  </Card>
+      </CardHeader>
+      <CardContent className="p-6 md:p-10">
+        <div className="flex flex-col md:flex-row gap-10">
+          <Skeleton className="h-64 md:w-1/2 rounded-2xl" />
+          <div className="md:w-1/2">
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-full mb-2" />
+            <Skeleton className="h-4 w-3/4 mb-4" />
+            <Skeleton className="h-10 w-40" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
 );
 
 const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
-  <Card className="max-w-2xl mx-auto my-8 bg-red-100 border-l-4 border-red-500 shadow-lg rounded-lg p-8">
-    <CardContent className="text-center text-red-600 font-semibold">
-      {message}
-    </CardContent>
-  </Card>
+  <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <Card className="max-w-2xl w-full bg-white/90 backdrop-blur-sm border-l-4 border-red-500 shadow-2xl rounded-3xl p-8">
+      <CardContent className="text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <svg
+            className="mx-auto h-16 w-16 text-red-500 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
+          </svg>
+          <p className="text-xl font-semibold text-red-600">{message}</p>
+        </motion.div>
+      </CardContent>
+    </Card>
+  </div>
 );
 
 export default PostDetail;
+
