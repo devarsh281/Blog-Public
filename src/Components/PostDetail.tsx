@@ -1,6 +1,4 @@
-"use client";
-
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { disAPI } from "@/lib/utils";
 import {
@@ -77,7 +75,7 @@ const PostDetail: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen  bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8"
     >
       <Card className="max-w-7xl mx-auto overflow-hidden shadow-2xl rounded-3xl border-0 bg-white/80 backdrop-blur-sm">
         <CardHeader className="relative py-12 px-6 overflow-hidden">
@@ -108,16 +106,19 @@ const PostDetail: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="md:w-1/2"
+                className="md:w-1/2 md:h-auto"
               >
                 <img
                   src={post.image}
                   alt={`Image for ${post.title}`}
-                  className="w-full h-auto object-cover rounded-2xl shadow-lg"
+                  className="w-full h-auto object-cover rounded-2xl shadow-lg "
                 />
               </motion.div>
             )}
-            <div className={post.image ? "md:w-1/2" : "w-full"}>
+
+            <div
+              className={post.image ? "md:w-1/2 relative overflow-hidden" : "w-full relative"}
+            >
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -126,6 +127,7 @@ const PostDetail: React.FC = () => {
               >
                 {post.description}
               </motion.p>
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -133,7 +135,7 @@ const PostDetail: React.FC = () => {
               >
                 <ShareButton
                   postTitle={post.title}
-                  postUrl={`https://yourwebsite.com/posts/${post.id}`}
+                  postUrl={`https://blog-public-vert.vercel.app/posts/${post.id}`}
                 />
               </motion.div>
             </div>
