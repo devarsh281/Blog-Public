@@ -69,6 +69,62 @@ const PostDetail: React.FC = () => {
     return <ErrorMessage message="Post not found" />;
   }
 
+  const splitText = (text: string, limit: number) => {
+    const words = text.split(" ");
+    let firstPart = "";
+    let secondPart = "";
+
+    let length = 0;
+    for (let i = 0; i < words.length; i++) {
+      if (length + words[i].length + 1 <= limit) {
+        firstPart += words[i] + " ";
+        length += words[i].length + 1;
+      } else {
+        secondPart = words.slice(i).join(" ");
+        break;
+      }
+    }
+
+    return { firstPart: firstPart.trim(), secondPart: secondPart.trim() };
+  };
+
+//   const splitText = (text: string, limit: number) => {
+//     const words = text.split(" ");
+//     let firstPart = "";
+//     let secondPart = "";
+//     let thirdPart = "";
+
+//     let length = 0;
+//     let secondPartStarted = false;
+
+//     for (let i = 0; i < words.length; i++) {
+//         if (length + words[i].length + 1 <= limit) {
+//             firstPart += words[i] + " ";
+//             length += words[i].length + 1;
+//         } else if (!secondPartStarted) {
+//             secondPart = words.slice(i).join(" ");
+//             secondPartStarted = true;
+//             break;
+//         }
+//     }
+
+//     if (secondPart.length > limit) {
+//         const secondWords = secondPart.split(" ");
+//         length = 0;
+//         for (let i = 0; i < secondWords.length; i++) {
+//             if (length + secondWords[i].length + 1 <= limit) {
+//                 thirdPart += secondWords[i] + " ";
+//                 length += secondWords[i].length + 1;
+//             } else {
+//                 secondPart = secondWords.slice(i).join(" ");
+//                 break;
+//             }
+//         }
+//     }
+
+//     return { firstPart, secondPart, thirdPart };
+// };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -99,46 +155,74 @@ const PostDetail: React.FC = () => {
           </motion.div>
         </CardHeader>
 
-        <CardContent className="p-6 md:p-10">
-          <div className="flex flex-col md:flex-row gap-10">
+        <CardContent className="p-6 md:p-10 flex justify-center items-center min-h-screen">
+          <div className="flex flex-col justify-center items-center gap-6 w-full md:w-1/2">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="w-full text-center"
+            >
+              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
+                {splitText(post.description, 500).firstPart}
+              </p>
+            </motion.div>
+
             {post.image && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
-                className="md:w-1/2 md:h-auto"
+                className="w-full md:w-1/2 mx-auto"
               >
                 <img
                   src={post.image}
                   alt={`Image for ${post.title}`}
-                  className="w-full h-auto object-cover rounded-2xl shadow-lg "
+                  className="w-auto h-auto object-cover rounded-2xl shadow-lg"
                 />
               </motion.div>
             )}
 
-            <div
-              className={post.image ? "md:w-1/2 relative overflow-hidden" : "w-full relative"}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="w-full text-center"
             >
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
-                className="text-lg text-gray-700 leading-relaxed mb-6"
-              >
-                {post.description}
-              </motion.p>
-
+              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
+                {splitText(post.description, 500).secondPart}
+              </p>
+            {/* </motion.div> */}
+            {/* Third
+            {post.image && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                className="w-full md:w-1/2 mx-auto"
               >
-                <ShareButton
-                  postTitle={post.title}
-                  postUrl={`https://blog-public-vert.vercel.app/posts/${post.id}`}
+                <img
+                  src={post.image}
+                  alt={`Image for ${post.title}`}
+                  className="w-auto h-auto object-cover rounded-2xl shadow-lg"
                 />
               </motion.div>
-            </div>
+            )}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="w-full text-center"
+            >
+              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
+                {splitText(post.description, 300).thirdPart}
+              </p> */}
+
+              <ShareButton
+                postTitle={post.title}
+                postUrl={`https://blog-public-vert.vercel.app/${post.id}`}
+              />
+            </motion.div>
           </div>
         </CardContent>
 
@@ -210,4 +294,3 @@ const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
 );
 
 export default PostDetail;
-

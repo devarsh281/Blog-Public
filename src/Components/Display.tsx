@@ -1,6 +1,6 @@
 "use client";
 
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   // Loader2,
   ChevronLeft,
@@ -56,9 +56,9 @@ export default function Display() {
   const [search, setSearch] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [error, setError] = useState<string | null>(null);
-  // const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6; 
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -182,17 +182,23 @@ export default function Display() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-violet-100 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-r from-violet-100 to-purple-50 py-12 px-2 sm:px-4 lg:px-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-400 animate-pulse">
-          Discover Amazing Blogs
-        </h1>
+        <motion.div
+          initial={{ opacity: 0, y: -60 }}
+          animate={{ opacity: 1, y: 1 }}
+          transition={{ duration: 1.0, delay: 0.5 }}
+        >
+          <h1 className="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-400 animate-pulse">
+            Discover Amazing Blogs
+          </h1>
+        </motion.div>
 
         <motion.div
           className="mb-12 flex flex-col sm:flex-row gap-4 bg-white p-6 rounded-xl shadow-lg"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
         >
           <Input
             type="text"
