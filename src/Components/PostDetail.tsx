@@ -88,42 +88,42 @@ const PostDetail: React.FC = () => {
     return { firstPart: firstPart.trim(), secondPart: secondPart.trim() };
   };
 
-//   const splitText = (text: string, limit: number) => {
-//     const words = text.split(" ");
-//     let firstPart = "";
-//     let secondPart = "";
-//     let thirdPart = "";
+  //   const splitText = (text: string, limit: number) => {
+  //     const words = text.split(" ");
+  //     let firstPart = "";
+  //     let secondPart = "";
+  //     let thirdPart = "";
 
-//     let length = 0;
-//     let secondPartStarted = false;
+  //     let length = 0;
+  //     let secondPartStarted = false;
 
-//     for (let i = 0; i < words.length; i++) {
-//         if (length + words[i].length + 1 <= limit) {
-//             firstPart += words[i] + " ";
-//             length += words[i].length + 1;
-//         } else if (!secondPartStarted) {
-//             secondPart = words.slice(i).join(" ");
-//             secondPartStarted = true;
-//             break;
-//         }
-//     }
+  //     for (let i = 0; i < words.length; i++) {
+  //         if (length + words[i].length + 1 <= limit) {
+  //             firstPart += words[i] + " ";
+  //             length += words[i].length + 1;
+  //         } else if (!secondPartStarted) {
+  //             secondPart = words.slice(i).join(" ");
+  //             secondPartStarted = true;
+  //             break;
+  //         }
+  //     }
 
-//     if (secondPart.length > limit) {
-//         const secondWords = secondPart.split(" ");
-//         length = 0;
-//         for (let i = 0; i < secondWords.length; i++) {
-//             if (length + secondWords[i].length + 1 <= limit) {
-//                 thirdPart += secondWords[i] + " ";
-//                 length += secondWords[i].length + 1;
-//             } else {
-//                 secondPart = secondWords.slice(i).join(" ");
-//                 break;
-//             }
-//         }
-//     }
+  //     if (secondPart.length > limit) {
+  //         const secondWords = secondPart.split(" ");
+  //         length = 0;
+  //         for (let i = 0; i < secondWords.length; i++) {
+  //             if (length + secondWords[i].length + 1 <= limit) {
+  //                 thirdPart += secondWords[i] + " ";
+  //                 length += secondWords[i].length + 1;
+  //             } else {
+  //                 secondPart = secondWords.slice(i).join(" ");
+  //                 break;
+  //             }
+  //         }
+  //     }
 
-//     return { firstPart, secondPart, thirdPart };
-// };
+  //     return { firstPart, secondPart, thirdPart };
+  // };
 
   return (
     <motion.div
@@ -178,7 +178,7 @@ const PostDetail: React.FC = () => {
                 <img
                   src={post.image}
                   alt={`Image for ${post.title}`}
-                  className="w-auto h-auto object-cover rounded-2xl shadow-lg"
+                  className="w-full h-auto object-cover rounded-2xl shadow-lg"
                 />
               </motion.div>
             )}
@@ -192,8 +192,8 @@ const PostDetail: React.FC = () => {
               <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
                 {splitText(post.description, 500).secondPart}
               </p>
-            {/* </motion.div> */}
-            {/* Third
+              {/* </motion.div> */}
+              {/* Third
             {post.image && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
