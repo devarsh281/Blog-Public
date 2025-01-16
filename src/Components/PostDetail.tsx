@@ -73,12 +73,14 @@ const PostDetail: React.FC = () => {
     const words = text.split(" ");
     let firstPart = "";
     let secondPart = "";
-
     let length = 0;
+
     for (let i = 0; i < words.length; i++) {
-      if (length + words[i].length + 1 <= limit) {
-        firstPart += words[i] + " ";
-        length += words[i].length + 1;
+      const word = words[i].trim();
+
+      if (length + word.length + 1 <= limit) {
+        firstPart += word + " ";
+        length += word.length + 1;
       } else {
         secondPart = words.slice(i).join(" ");
         break;
@@ -87,43 +89,6 @@ const PostDetail: React.FC = () => {
 
     return { firstPart: firstPart.trim(), secondPart: secondPart.trim() };
   };
-
-  //   const splitText = (text: string, limit: number) => {
-  //     const words = text.split(" ");
-  //     let firstPart = "";
-  //     let secondPart = "";
-  //     let thirdPart = "";
-
-  //     let length = 0;
-  //     let secondPartStarted = false;
-
-  //     for (let i = 0; i < words.length; i++) {
-  //         if (length + words[i].length + 1 <= limit) {
-  //             firstPart += words[i] + " ";
-  //             length += words[i].length + 1;
-  //         } else if (!secondPartStarted) {
-  //             secondPart = words.slice(i).join(" ");
-  //             secondPartStarted = true;
-  //             break;
-  //         }
-  //     }
-
-  //     if (secondPart.length > limit) {
-  //         const secondWords = secondPart.split(" ");
-  //         length = 0;
-  //         for (let i = 0; i < secondWords.length; i++) {
-  //             if (length + secondWords[i].length + 1 <= limit) {
-  //                 thirdPart += secondWords[i] + " ";
-  //                 length += secondWords[i].length + 1;
-  //             } else {
-  //                 secondPart = secondWords.slice(i).join(" ");
-  //                 break;
-  //             }
-  //         }
-  //     }
-
-  //     return { firstPart, secondPart, thirdPart };
-  // };
 
   return (
     <motion.div
@@ -164,7 +129,7 @@ const PostDetail: React.FC = () => {
               className="w-full text-center"
             >
               <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
-                {splitText(post.description, 500).firstPart}
+                {splitText(post.description, 550).firstPart}
               </p>
             </motion.div>
 
@@ -190,33 +155,8 @@ const PostDetail: React.FC = () => {
               className="w-full text-center"
             >
               <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
-                {splitText(post.description, 500).secondPart}
+                {splitText(post.description, 310).secondPart}
               </p>
-              {/* </motion.div> */}
-              {/* Third
-            {post.image && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="w-full md:w-1/2 mx-auto"
-              >
-                <img
-                  src={post.image}
-                  alt={`Image for ${post.title}`}
-                  className="w-auto h-auto object-cover rounded-2xl shadow-lg"
-                />
-              </motion.div>
-            )}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="w-full text-center"
-            >
-              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
-                {splitText(post.description, 300).thirdPart}
-              </p> */}
 
               <ShareButton
                 postTitle={post.title}

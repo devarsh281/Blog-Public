@@ -56,13 +56,11 @@ export default function Display() {
   const [search, setSearch] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [error, setError] = useState<string | null>(null);
-  // const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchData = async () => {
-      // setLoading(true);
       setError(null);
 
       try {
@@ -79,9 +77,7 @@ export default function Display() {
         }
       } catch {
         setError("Error fetching posts");
-      } finally {
-        // setLoading(false);
-      }
+      } 
     };
 
     fetchData();
@@ -161,13 +157,7 @@ export default function Display() {
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen bg-gradient-to-r from-violet-200 to-pink-200">
-  //       <Loader2 className="h-16 w-16 animate-spin text-violet-600" />
-  //     </div>
-  //   );
-  // }
+  
 
   if (error) {
     return (
@@ -187,7 +177,7 @@ export default function Display() {
         <motion.div
           initial={{ opacity: 0, y: -60 }}
           animate={{ opacity: 1, y: 1 }}
-          transition={{ duration: 1.0, delay: 0.5 }}
+          transition={{ duration: 1.0, delay: 0.01 }}
         >
           <h1 className="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-400 animate-pulse">
             Discover Amazing Blogs
