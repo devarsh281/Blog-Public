@@ -172,14 +172,14 @@ export default function Display() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-violet-100 to-purple-50 py-12 px-2 sm:px-4 lg:px-4">
+    <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-150 py-12 px-2 sm:px-4 lg:px-4">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -60 }}
-          animate={{ opacity: 1, y: 1 }}
-          transition={{ duration: 1.0, delay: 0.01 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.0, delay: 0.5 }}
         >
-          <h1 className="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-400 animate-pulse">
+          <h1 className="text-5xl md:text-7xl font-extrabold text-center mb-12 text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-blue-900 animate-pulse">
             Discover Amazing Blogs
           </h1>
         </motion.div>
