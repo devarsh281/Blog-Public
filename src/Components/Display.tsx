@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  // Loader2,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  Calendar,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Eye, Calendar } from "lucide-react";
 import { disAPI } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import {
@@ -28,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { useAuth } from "./Authentication/AuthContext";
 
 interface Post {
   id: number;
@@ -50,6 +45,7 @@ const categoryColors: { [key: string]: string } = {
 
 export default function Display() {
   const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
@@ -77,7 +73,7 @@ export default function Display() {
         }
       } catch {
         setError("Error fetching posts");
-      } 
+      }
     };
 
     fetchData();
@@ -142,10 +138,15 @@ export default function Display() {
   };
 
   const toggleDescription = async (postId: number) => {
+    if (!isAuthenticated) {
+      navigate("/signin");
+      return; 
+    }
+  
     try {
       const data = await disAPI(`analysis/updateviews/${postId}`);
       console.log(data);
-
+  
       setPosts((prevPosts) =>
         prevPosts.map((post) =>
           post.id === postId ? { ...post, views: (post.views || 0) + 1 } : post
@@ -156,7 +157,6 @@ export default function Display() {
       console.error("Error updating view count:", error);
     }
   };
-
   
 
   if (error) {
@@ -210,6 +210,31 @@ export default function Display() {
               ))}
             </SelectContent>
           </Select>
+
+          {isAuthenticated ? (
+            <div className="text- font-medium text-gray-700 self-center">
+              Welcome, {user?.username}!
+            </div>
+          ) : (
+            <div className="flex gap-4 self-center">
+              <Button
+                onClick={() => navigate("/signin")}
+                variant="outline"
+                className="text-lg text-white bg-black/80 hover:bg-black hover:text-white transition-colors duration-300"
+              >
+                Login
+              </Button>
+            </div>
+          )}
+          {isAuthenticated && (
+            <Button
+              onClick={logout}
+              variant="outline"
+              className="text-lg text-white bg-black/80 hover:bg-black hover:text-white transition-colors duration-300"
+              >
+              Logout
+            </Button>
+          )}
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -23,7 +23,12 @@ interface Post {
   category: string;
   description: string;
   image: string | null;
-  likes: number;
+  likesCount: number;
+ 
+}
+
+interface PostResponse {
+  data: Post; 
 }
 
 interface Comment {
@@ -41,7 +46,8 @@ const PostDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState<number>(0);
+  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); 
 
   
   const fetchPost = async () => {
@@ -57,7 +63,7 @@ const PostDetail: React.FC = () => {
       setPost(postData);
       const commentsResponse = await disAPI(`posts/getcomment/${id}`);
       setComments(commentsResponse.comments || []);
-      console.log(commentsResponse.comments);
+      // console.log(commentsResponse.comments);
 
     } catch {
       setError("Error fetching post");
@@ -106,17 +112,23 @@ const PostDetail: React.FC = () => {
     }
   };
 
+  
   const handleLike = async () => {
+    
     try {
       const response = await disAPI(`posts/likepost/${id}`, "POST");
-      setLikes(response);
-
-      console.log(response);
+      const updatedPost: PostResponse = response;
+      setLikes(updatedPost.data.likesCount);  
+      console.log(updatedPost.data.likesCount)
+      if (id) {
+        fetchPost(); 
+      }
     } catch (err) {
       console.error(err);
       setError("Error liking post");
     }
   };
+
 
   const toggleComments = () => {
     setShowComments(!showComments);
@@ -133,6 +145,9 @@ const PostDetail: React.FC = () => {
   if (!post) {
     return <ErrorMessage message="Post not found" />;
   }
+
+  
+
 
   const splitText = (text: string, limit: number) => {
     const words = text.split(" ");
@@ -205,7 +220,7 @@ const PostDetail: React.FC = () => {
                 className="w-full mx-auto"
               >
                 <img
-                  src={post.image || "/placeholder.svg"}
+                  src={post.image}
                   alt={`Image for ${post.title}`}
                   className="w-full h-auto object-cover rounded-2xl shadow-lg"
                 />
