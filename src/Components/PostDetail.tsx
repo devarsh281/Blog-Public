@@ -24,12 +24,11 @@ interface Post {
   description: string;
   image: string | null;
   likesCount: number;
- 
 }
 
-interface PostResponse {
-  data: Post; 
-}
+// interface PostResponse {
+//   data: Post;
+// }
 
 interface Comment {
   text: string;
@@ -46,10 +45,9 @@ const PostDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [likes, setLikes] = useState<number>(0);
-  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); 
+  const [likesCount, setLikesCount] = useState<number>(0);
+  const [likes, setLikes] = useState<string[]>([]);
 
-  
   const fetchPost = async () => {
     setLoading(true);
     setError(null);
@@ -61,19 +59,19 @@ const PostDetail: React.FC = () => {
         postData.image = `http://localhost:8081/posts/images/${id}`;
       }
       setPost(postData);
+      setLikes(postData.likes);
+      setLikesCount(postData.likesCount);
+
       const commentsResponse = await disAPI(`posts/getcomment/${id}`);
       setComments(commentsResponse.comments || []);
-      // console.log(commentsResponse.comments);
-
     } catch {
       setError("Error fetching post");
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
-  useEffect(() => {
 
-   
+  useEffect(() => {
     if (id) {
       fetchPost();
     }
@@ -104,7 +102,6 @@ const PostDetail: React.FC = () => {
         fetchPost();
       }
       setNewComment("");
-      
     } catch {
       setError("Error adding comment");
     } finally {
@@ -112,23 +109,36 @@ const PostDetail: React.FC = () => {
     }
   };
 
-  
   const handleLike = async () => {
-    
-    try {
-      const response = await disAPI(`posts/likepost/${id}`, "POST");
-      const updatedPost: PostResponse = response;
-      setLikes(updatedPost.data.likesCount);  
-      console.log(updatedPost.data.likesCount)
-      if (id) {
-        fetchPost(); 
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : null;
+    if (user && user.username) {
+      const username = user.username;
+      console.log("Username:", username);
+
+      try {
+        const hasLiked = likes.includes(username);
+        if (hasLiked) {
+          setLikes(likes.filter((user) => user !== username));
+          setLikesCount(likesCount - 1);
+        } else {
+          setLikes([...likes, username]);
+          setLikesCount(likesCount + 1);
+        }
+
+        await disAPI(
+          `posts/likepost/${id}`,
+          "POST",
+          JSON.stringify({ username })
+        );
+      } catch (err) {
+        console.error(err);
+        setError("Error liking/disliking post");
       }
-    } catch (err) {
-      console.error(err);
-      setError("Error liking post");
+    } else {
+      console.log("User not found or username is missing.");
     }
   };
-
 
   const toggleComments = () => {
     setShowComments(!showComments);
@@ -145,9 +155,6 @@ const PostDetail: React.FC = () => {
   if (!post) {
     return <ErrorMessage message="Post not found" />;
   }
-
-  
-
 
   const splitText = (text: string, limit: number) => {
     const words = text.split(" ");
@@ -172,9 +179,9 @@ const PostDetail: React.FC = () => {
 
   return (
     <motion.div
-    initial={{ opacity: 0, y: -60 }}
-    animate={{ opacity: 1, y: 1 }}
-    transition={{ duration: 0.5, delay: 0.01 }}
+      initial={{ opacity: 0, y: -60 }}
+      animate={{ opacity: 1, y: 1 }}
+      transition={{ duration: 0.5, delay: 0.01 }}
       className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 py-12 px-4 sm:px-6 lg:px-8"
     >
       <Card className="max-w-7xl mx-auto overflow-hidden shadow-2xl rounded-3xl border-0 bg-white/80 backdrop-blur-sm">
@@ -252,7 +259,7 @@ const PostDetail: React.FC = () => {
                     onClick={handleLike}
                   >
                     <Heart className="w-5 h-5" fill="" />
-                    <span>{likes}</span>
+                    <span>{likesCount}</span>
                   </Button>
                   <Button
                     variant="ghost"
@@ -351,9 +358,7 @@ const PostDetail: React.FC = () => {
   );
 };
 
-const LoadingSkeleton = () => (
-  <div></div>
-);
+const LoadingSkeleton = () => <div></div>;
 
 const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
   <motion.div
