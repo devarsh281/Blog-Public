@@ -156,27 +156,8 @@ const PostDetail: React.FC = () => {
     return <ErrorMessage message="Post not found" />;
   }
 
-  const splitText = (text: string, limit: number) => {
-    const words = text.split(" ");
-    let firstPart = "";
-    let secondPart = "";
-    let length = 0;
 
-    for (let i = 0; i < words.length; i++) {
-      const word = words[i].trim();
-
-      if (length + word.length + 1 <= limit) {
-        firstPart += word + " ";
-        length += word.length + 1;
-      } else {
-        secondPart = words.slice(i).join(" ");
-        break;
-      }
-    }
-
-    return { firstPart: firstPart.trim(), secondPart: secondPart.trim() };
-  };
-
+  const body = post.description;
   return (
     <motion.div
       initial={{ opacity: 0, y: -60 }}
@@ -214,35 +195,16 @@ const PostDetail: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.5 }}
               className="w-full text-center"
             >
-              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
-                {splitText(post.description, 550).firstPart}
+              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify hidden">
+                {post.description}
               </p>
+              <div
+                dangerouslySetInnerHTML={{ __html: body }}
+                className="text-lg text-gray-700 leading-relaxed mb-6 text-left"
+              ></div>
             </motion.div>
 
-            {post.image && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-                className="w-full mx-auto"
-              >
-                <img
-                  src={post.image}
-                  alt={`Image for ${post.title}`}
-                  className="w-full h-auto object-cover rounded-2xl shadow-lg"
-                />
-              </motion.div>
-            )}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="w-full text-center"
-            >
-              <p className="text-lg text-gray-700 leading-relaxed mb-6 text-justify">
-                {splitText(post.description, 310).secondPart}
-              </p>
-            </motion.div>
+            
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

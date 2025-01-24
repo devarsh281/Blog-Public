@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { useAuth } from "./Authentication/AuthContext";
+import DOMPurify from "dompurify";
 
 interface Post {
   id: number;
@@ -266,9 +267,12 @@ export default function Display() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                  <p className="text-muted-foreground line-clamp-4">
-                    {post.description}
-                  </p>
+                 <div
+                      className="text-gray-600 line-clamp-4"
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(post.description),
+                      }}
+                    />
                 </CardContent>
                 <CardFooter className="flex justify-between items-center">
                   <span className="text-sm text-muted-foreground flex items-center">
